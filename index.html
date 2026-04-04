@@ -174,7 +174,7 @@
             margin-top: 20px;
             text-align: center;
         }
-        /* Остальные стили (игры, разбор схем) */
+        /* Игровые сценарии */
         .next-btn, .to-practice-btn, .restart-btn {
             background: linear-gradient(95deg, #ff8800, #ffcc00);
             border: none;
@@ -247,19 +247,28 @@
         }
         .green-feedback { color: #b3ffaa; border-left-color: #2eff2e; }
         .red-feedback { color: #ffb3b3; border-left-color: #ff4444; }
+
+        /* ===== ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ РАЗБОРА МАНИПУЛЯЦИЙ (светлый фон) ===== */
         .manipulation-card {
-            background: #0f1629;
+            background: #fef7e0;          /* светло-кремовый фон */
             border-radius: 28px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 2px solid #ffaa3366;
+            border: 2px solid #ffaa33;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .manipulation-card h2 {
+            color: #b45f06;               /* тёмно-оранжевый */
         }
         .manipulation-question {
-            background: #1e2a3e;
+            background: #ffffff;
             padding: 16px;
             border-radius: 24px;
             font-size: 1.1rem;
             margin-bottom: 18px;
+            color: #1e2a3e;
+            font-weight: bold;
+            border: 1px solid #ffaa33;
         }
         .manipulation-options {
             display: flex;
@@ -268,23 +277,31 @@
             margin-top: 12px;
         }
         .manip-btn {
-            background: #2a3a52;
+            background: #ffdd99;
             border: none;
             padding: 10px 20px;
             border-radius: 60px;
             font-weight: bold;
             cursor: pointer;
-            color: white;
+            color: #3d2b1a;
             font-family: inherit;
+            transition: 0.05s linear;
+            border: 1px solid #ccaa66;
         }
         .manip-btn:hover {
-            background: #ffaa33;
-            color: #1f1a00;
+            background: #ffcc66;
+            transform: scale(1.02);
         }
         .manip-feedback {
             margin-top: 12px;
             font-weight: bold;
+            background: #fff3e0;
+            padding: 12px;
+            border-radius: 20px;
+            color: #2c2c2c;
         }
+        /* Конец исправленных стилей */
+
         .bright-rules {
             background: linear-gradient(135deg, #ffcc33, #ffaa00);
             color: #1f1a00;
@@ -637,7 +654,7 @@
     }
 
     // --------------------------------------------------------------
-    //  РАЗБОР СХЕМ (манипуляции)
+    //  РАЗБОР СХЕМ (манипуляции) — СВЕТЛЫЙ ФОН
     // --------------------------------------------------------------
     function renderPractice() {
         if (practiceIndex >= manipulations.length) {
@@ -648,7 +665,7 @@
         const alreadyAnswered = practiceAnswers[practiceIndex];
         let html = `
             <div class="manipulation-card">
-                <h2 style="color:#ffaa44;">🔍 Задание ${practiceIndex+1} из ${manipulations.length}</h2>
+                <h2 style="color:#b45f06;">🔍 Задание ${practiceIndex+1} из ${manipulations.length}</h2>
                 <div class="manipulation-question">${m.text}</div>
                 <div class="manipulation-options" id="manipOpts">
         `;
@@ -673,9 +690,9 @@
                     if (isCorrect) {
                         totalScore += 5;
                         updateUI();
-                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#b3ffaa;">✅ ${m.explanation}</span>`;
+                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#2e7d32;">✅ ${m.explanation}</span>`;
                     } else {
-                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#ffb3b3;">❌ Неверно. ${m.explanation}</span>`;
+                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#c62828;">❌ Неверно. ${m.explanation}</span>`;
                     }
                     practiceAnswers[practiceIndex] = true;
                     const nextBtn = document.getElementById('nextPracticeBtn');
@@ -686,7 +703,7 @@
         } else {
             const feedbackDiv = document.getElementById('manipFeedback');
             if (feedbackDiv) {
-                feedbackDiv.innerHTML = `<span style="color:#ffcc88;">⏩ Ты уже ответил. Нажми «ДАЛЬШЕ».</span>`;
+                feedbackDiv.innerHTML = `<span style="color:#b45f06;">⏩ Ты уже ответил. Нажми «ДАЛЬШЕ».</span>`;
             }
             document.querySelectorAll('.manip-btn').forEach(btn => btn.disabled = true);
         }
