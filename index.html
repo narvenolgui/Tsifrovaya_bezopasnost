@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>СТОП! Не дай себя обмануть — игра-тренажёр</title>
     <style>
         * {
@@ -21,17 +21,15 @@
             padding: 20px;
         }
         .game-container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
-            background: rgba(18, 25, 45, 0.8);
+            background: rgba(18, 25, 45, 0.85);
             backdrop-filter: blur(4px);
             border-radius: 48px;
             box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
             overflow: hidden;
-            transition: all 0.2s;
         }
         .header {
-            background: #ff3b3b;
             background: linear-gradient(135deg, #ff3b3b, #ff8c00);
             padding: 20px 28px;
             text-align: center;
@@ -160,6 +158,29 @@
             margin-top: 20px;
             cursor: pointer;
         }
+        /* ЯРКИЙ БЛОК ПРАВИЛ — больше не чёрный фон! */
+        .bright-rules {
+            background: linear-gradient(135deg, #ffcc33, #ffaa00);
+            color: #1f1a00;
+            border-radius: 32px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 2px solid #fff1b5;
+        }
+        .bright-rules p {
+            font-size: 1rem;
+            margin: 12px 0;
+            font-weight: bold;
+            color: #1f1a00;
+        }
+        .bright-rules p:first-child {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 0 #ffeeaa;
+        }
         .copyright {
             text-align: center;
             font-size: 0.75rem;
@@ -190,7 +211,7 @@
         <div class="question-counter">📋 Вопрос <span id="qCurrent">1</span> / <span id="qTotal">4</span></div>
     </div>
     <div class="content" id="dynamicContent">
-        <!-- сценарии будут загружены js -->
+        <!-- сценарии загружаются через JS -->
     </div>
     <div class="copyright">
         narven_olgui © 2026 · Профилактика вовлечения подростков в преступления через мессенджеры
@@ -198,12 +219,12 @@
 </div>
 <script>
     // --------------------------------------------------------------
-    //  СЦЕНАРИИ (полностью на основе реальных случаев Москва 2025-26)
+    //  СЦЕНАРИИ — полная замена TikTok → RuTube, Telegram → Макс
     // --------------------------------------------------------------
     const scenarios = [
         { // 1
             title: "🔥 Звонок от «следователя»",
-            message: "Тебе приходит сообщение в Telegram от человека с фото полицейского удостоверения: \n\n«Срочно! Твой друг замешан в теракте. Помоги следствию — подожги банкомат на углу. Иначе тебя посадят как соучастника!»",
+            message: "Тебе приходит сообщение в мессенджере «Макс» от человека с фото полицейского удостоверения: \n\n«Срочно! Твой друг замешан в теракте. Помоги следствию — подожги банкомат на углу. Иначе тебя посадят как соучастника!»",
             options: [
                 "A) Сразу бегу с зажигалкой к банкомату — боюсь за друга.",
                 "B) Требую личной встречи в отделении полиции и говорю родителям.",
@@ -219,7 +240,7 @@
         },
         { // 2
             title: "💔 «Девушка» из соцсетей",
-            message: "Ты познакомился с красивой девушкой (фото модели) в Instagram. Она пишет: \n\n«Привет, ты мне очень нравишься! Помоги снять видео для моего блога: подожги АЗС, я дам тебе 30 000 руб. и мы встретимся. Никому не говори!»",
+            message: "Ты познакомился с красивой девушкой (фото модели) в соцсети. Она пишет в «Макс»: \n\n«Привет, ты мне очень нравишься! Помоги снять видео для моего блога: подожги АЗС, я дам тебе 30 000 руб. и мы встретимся. Никому не говори!»",
             options: [
                 "A) Соглашаюсь — и деньги, и девушка, что может пойти не так?",
                 "B) Пишу: «Встретимся сначала в реальности» — если откажется, блокирую и говорю родителям.",
@@ -235,7 +256,7 @@
         },
         { // 3
             title: "💰 Легкий заработок",
-            message: "В TikTok тебе приходит реклама: «Заработай 50 000 руб. за час! Нужно просто кинуть коктейль Молотова в банкомат. Платёж сразу на карту.» \n\n«Это не больно, банкомат застрахован. Никто не пострадает!»",
+            message: "В RuTube тебе приходит реклама: «Заработай 50 000 руб. за час! Нужно просто кинуть коктейль Молотова в банкомат. Платёж сразу на карту.» \n\n«Это не больно, банкомат застрахован. Никто не пострадает!»",
             options: [
                 "A) Берусь — деньги нужны на новый айфон.",
                 "B) Игнорирую, блокирую и жалуюсь на рекламу.",
@@ -251,7 +272,7 @@
         },
         { // 4
             title: "😨 Угроза родителям",
-            message: "Незнакомец в мессенджере пишет, что знает адрес твоей семьи. Сообщение: \n\n«Если ты не подорвешь банкомат у метро до 19:00, мы убьём твою маму. Видео с поджогом обязательно. Никому не звони!»",
+            message: "Незнакомец в «Макс» пишет, что знает адрес твоей семьи. Сообщение: \n\n«Если ты не подорвешь банкомат у метро до 19:00, мы убьём твою маму. Видео с поджогом обязательно. Никому не звони!»",
             options: [
                 "A) В панике бегу к банкомату, лишь бы маму не тронули.",
                 "B) Немедленно звоню маме, затем в полицию 102, показываю угрозы.",
@@ -269,7 +290,7 @@
 
     let currentIndex = 0;
     let score = 0;
-    let answered = false;      // заблокировать кнопки после ответа
+    let answered = false;
     let selectedOption = -1;
 
     const dynamicDiv = document.getElementById('dynamicContent');
@@ -285,7 +306,6 @@
 
     function renderCurrent() {
         if (currentIndex >= scenarios.length) {
-            // игра закончена
             showFinalScreen();
             return;
         }
@@ -300,19 +320,11 @@
             html += `<button class="option-btn" data-opt-index="${idx}">${opt}</button>`;
         });
         html += `</div><div id="feedbackArea" class="feedback" style="display: none;"></div>`;
-        if (answered && selectedOption !== -1) {
-            // уже был ответ
-            const isCorrect = (selectedOption === s.correct);
-            const feedbackDiv = document.createElement('div');
-            // но мы пересоздадим через setTimeout или сразу добавим, но проще в рендере добавить
-            // сделаем так: после рендера добавим содержимое feedback, но т.к. answered true, покажем его
-        }
         html += `<button class="next-btn" id="nextButton">➡ ДАЛЬШЕ</button></div>`;
         dynamicDiv.innerHTML = html;
 
-        // навесить обработчики
-        const btns = document.querySelectorAll('.option-btn');
-        btns.forEach(btn => {
+        // обработчики
+        document.querySelectorAll('.option-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (answered) return;
                 const idx = parseInt(btn.dataset.optIndex);
@@ -323,7 +335,6 @@
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 if (!answered) return;
-                // переход к следующему сценарию
                 currentIndex++;
                 answered = false;
                 selectedOption = -1;
@@ -331,12 +342,11 @@
                     renderCurrent();
                     updateUI();
                 } else {
-                    renderCurrent(); // вызовет финал
+                    renderCurrent();
                     updateUI();
                 }
             });
         }
-        // если уже отвечено на этом сценарии (при перерендере) - показать feedback
         if (answered && selectedOption !== -1) {
             const sCurr = scenarios[currentIndex];
             const isCorrect = (selectedOption === sCurr.correct);
@@ -350,12 +360,11 @@
                 } else {
                     let wrongMsg = (selectedOption === 0) ? sCurr.wrongExplanations[0] : (selectedOption === 1 ? sCurr.wrongExplanations[1] : sCurr.wrongExplanations[0]);
                     if (selectedOption === 2 && sCurr.wrongExplanations[1]) wrongMsg = sCurr.wrongExplanations[1];
-                    feedbackText = `<span style="color:#ffb3b3;">${wrongMsg}</span><br><br>${sCurr.tip}`;
+                    feedbackText = `<span style="color:#ffb3b3;">❌ ${wrongMsg}</span><br><br>${sCurr.tip}`;
                     feedbackDiv.classList.add('red-feedback');
                 }
                 feedbackDiv.innerHTML = feedbackText;
             }
-            // заблокировать кнопки визуально
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.style.opacity = '0.6';
                 btn.style.pointerEvents = 'none';
@@ -374,7 +383,6 @@
             score += 20;
             updateUI();
         }
-        // отобразить feedback в уже существующем блоке
         const feedbackDiv = document.getElementById('feedbackArea');
         if (feedbackDiv) {
             feedbackDiv.style.display = 'block';
@@ -391,7 +399,6 @@
             }
             feedbackDiv.innerHTML = feedbackText;
         }
-        // заблокировать кнопки выбора
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.style.opacity = '0.6';
             btn.style.pointerEvents = 'none';
@@ -414,14 +421,17 @@
                 <h2 style="color:#ffaa44;">🏆 ИТОГОВАЯ ОЦЕНКА</h2>
                 <p style="font-size:1.6rem; margin:20px 0;">${score} / ${maxScore}</p>
                 <p style="background:#00000099; padding:16px; border-radius:28px;">${message}</p>
-                <div style="margin: 20px 0; text-align:left; background:#0f1629; border-radius:24px; padding:16px;">
-                    <p style="color:#ffcc88;">📢 ГЛАВНЫЕ ПРАВИЛА:</p>
+                
+                <!-- ЯРКИЙ БЛОК ПРАВИЛ (оранжево-жёлтый) -->
+                <div class="bright-rules">
+                    <p>🔥 ГЛАВНЫЕ ПРАВИЛА — ЗАПОМНИ НАВСЕГДА!</p>
                     <p>1️⃣ Никогда не выполняй действий с огнём, взрывчаткой или повреждением имущества по просьбе из интернета.</p>
                     <p>2️⃣ Любой незнакомец, требующий преступления — мошенник.</p>
                     <p>3️⃣ Сообщи родителям или в полицию (102) — это снимает с тебя ответственность.</p>
                     <p>4️⃣ Сохраняй переписку — она твоё доказательство в суде.</p>
-                    <p style="color:#ff7777;">⚖️ Уголовная ответственность с 14 лет. Штрафы до миллионов, срок до 20 лет.</p>
+                    <p style="color:#aa2e00; font-size:1.1rem;">⚖️ Уголовная ответственность с 14 лет. Штрафы — до миллионов рублей. Срок — до 20 лет тюрьмы.</p>
                 </div>
+                
                 <button class="restart-btn" id="restartGameBtn">🔄 Играть заново</button>
             </div>
         `;
@@ -436,7 +446,7 @@
         });
     }
 
-    // старт
+    // запуск
     renderCurrent();
 </script>
 </body>
