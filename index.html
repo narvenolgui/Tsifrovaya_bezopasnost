@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>СТОП! Не дай себя обмануть — игра-тренажёр</title>
+    <title>Кибербезопасность: не дай себя обмануть</title>
     <style>
         * {
             margin: 0;
@@ -21,7 +21,7 @@
             padding: 20px;
         }
         .game-container {
-            max-width: 850px;
+            max-width: 950px;
             width: 100%;
             background: rgba(18, 25, 45, 0.85);
             backdrop-filter: blur(4px);
@@ -64,21 +64,145 @@
         .content {
             padding: 28px;
         }
+        /* Стили для вступления */
+        .intro-slide {
+            background: #0f1629;
+            border-radius: 32px;
+            padding: 28px;
+            text-align: center;
+        }
+        .intro-slide h2 {
+            color: #ffaa44;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        .intro-slide p, .intro-slide ul {
+            color: #f0f0f0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .intro-slide ul {
+            padding-left: 25px;
+        }
+        .intro-slide li {
+            margin: 10px 0;
+        }
+        /* Стили для диалога (чат) */
+        .chat-container {
+            background: #0f1629;
+            border-radius: 32px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .chat-window {
+            background: #1a1f2e;
+            border-radius: 24px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            animation: fadeIn 0.2s ease;
+        }
+        .message-left {
+            background: #2a3a52;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .message-right {
+            background: #ffaa33;
+            color: #1f1a00;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .system-message {
+            background: #00000099;
+            color: #ffcc88;
+            text-align: center;
+            font-style: italic;
+            padding: 8px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .chat-next-btn {
+            background: linear-gradient(95deg, #ff8800, #ffcc00);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.1s;
+        }
+        .chat-reset-btn {
+            background: #2a3a52;
+            border: 1px solid #ffaa55;
+            color: white;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .chat-next-btn:active, .chat-reset-btn:active {
+            transform: scale(0.97);
+        }
+        .demo-complete {
+            margin-top: 20px;
+            text-align: center;
+        }
+        /* Остальные стили (игры, разбор схем) */
+        .next-btn, .to-practice-btn, .restart-btn {
+            background: linear-gradient(95deg, #ff8800, #ffcc00);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 60px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.1s;
+            color: #1e1a0a;
+        }
+        .next-btn:active, .to-practice-btn:active, .restart-btn:active {
+            transform: scale(0.97);
+        }
         .scenario {
             background: #0f1629;
             border-radius: 32px;
             padding: 24px;
             margin-bottom: 28px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             border-left: 8px solid #ff9900;
         }
         .scenario h2 {
             color: #ffaa44;
             margin-bottom: 18px;
             font-size: 1.7rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
         .message {
             background: #1e2a3e;
@@ -88,7 +212,6 @@
             font-style: italic;
             border: 1px solid #ffaa3366;
             color: #f0f0f0;
-            font-weight: 500;
         }
         .options {
             display: flex;
@@ -105,18 +228,14 @@
             font-weight: bold;
             text-align: left;
             cursor: pointer;
-            transition: 0.1s linear;
+            transition: 0.1s;
             color: white;
             font-family: inherit;
             border: 1px solid #3a4a66;
         }
         .option-btn:hover {
             background: #2a3a52;
-            transform: scale(1.01);
             border-color: #ffaa55;
-        }
-        .option-btn:active {
-            transform: scale(0.99);
         }
         .feedback {
             background: #000000aa;
@@ -124,41 +243,48 @@
             border-radius: 28px;
             margin-top: 20px;
             font-weight: bold;
-            font-size: 0.95rem;
             border-left: 6px solid #ffaa44;
         }
-        .next-btn {
-            background: linear-gradient(95deg, #ff8800, #ffcc00);
-            border: none;
-            width: 100%;
-            padding: 16px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 60px;
-            margin-top: 20px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: 0.1s;
-            color: #1e1a0a;
-        }
-        .next-btn:active {
-            transform: scale(0.97);
-        }
-        .final-screen {
-            text-align: center;
+        .green-feedback { color: #b3ffaa; border-left-color: #2eff2e; }
+        .red-feedback { color: #ffb3b3; border-left-color: #ff4444; }
+        .manipulation-card {
+            background: #0f1629;
+            border-radius: 28px;
             padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ffaa3366;
         }
-        .restart-btn {
-            background: #ffaa33;
+        .manipulation-question {
+            background: #1e2a3e;
+            padding: 16px;
+            border-radius: 24px;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+        }
+        .manipulation-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .manip-btn {
+            background: #2a3a52;
             border: none;
-            padding: 14px 28px;
-            border-radius: 40px;
+            padding: 10px 20px;
+            border-radius: 60px;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-top: 20px;
             cursor: pointer;
+            color: white;
+            font-family: inherit;
         }
-        /* ЯРКИЙ БЛОК ПРАВИЛ — больше не чёрный фон! */
+        .manip-btn:hover {
+            background: #ffaa33;
+            color: #1f1a00;
+        }
+        .manip-feedback {
+            margin-top: 12px;
+            font-weight: bold;
+        }
         .bright-rules {
             background: linear-gradient(135deg, #ffcc33, #ffaa00);
             color: #1f1a00;
@@ -179,7 +305,6 @@
             font-size: 1.4rem;
             text-align: center;
             margin-bottom: 16px;
-            text-shadow: 1px 1px 0 #ffeeaa;
         }
         .copyright {
             text-align: center;
@@ -189,14 +314,9 @@
             border-top: 1px solid #2a3a55;
             background: #03060e;
         }
-        .green-feedback { color: #b3ffaa; border-left-color: #2eff2e; }
-        .red-feedback { color: #ffb3b3; border-left-color: #ff4444; }
-        button {
-            user-select: none;
-        }
         @media (max-width: 550px) {
             .content { padding: 18px; }
-            .scenario h2 { font-size: 1.3rem; }
+            .message-left, .message-right { max-width: 95%; }
         }
     </style>
 </head>
@@ -204,112 +324,246 @@
 <div class="game-container" id="gameRoot">
     <div class="header">
         <h1>⛔ НЕ ДАЙ СЕБЯ ОБМАНУТЬ</h1>
-        <p>ИГРА-ТРЕНАЖЁР 🔥 КИБЕРБЕЗОПАСНОСТЬ</p>
+        <p>ИНТЕРАКТИВНЫЙ УРОК ПО КИБЕРБЕЗОПАСНОСТИ</p>
     </div>
     <div class="stats">
         <div class="score-box">🎯 Очки: <span id="scoreValue">0</span></div>
-        <div class="question-counter">📋 Вопрос <span id="qCurrent">1</span> / <span id="qTotal">4</span></div>
+        <div class="question-counter">📋 <span id="phaseLabel">Вступление</span> <span id="qCurrent">1</span> / <span id="qTotal">3</span></div>
     </div>
-    <div class="content" id="dynamicContent">
-        <!-- сценарии загружаются через JS -->
-    </div>
+    <div class="content" id="dynamicContent"></div>
     <div class="copyright">
-        narven_olgui © 2026 · Профилактика вовлечения подростков в преступления через мессенджеры
+        narven_olgui © 2026 · Профилактика вовлечения подростков в преступления
     </div>
 </div>
 <script>
     // --------------------------------------------------------------
-    //  СЦЕНАРИИ — полная замена TikTok → RuTube, Telegram → Макс
+    //  ВСТУПИТЕЛЬНЫЕ СЛАЙДЫ
     // --------------------------------------------------------------
-    const scenarios = [
-        { // 1
-            title: "🔥 Звонок от «следователя»",
-            message: "Тебе приходит сообщение в мессенджере «Макс» от человека с фото полицейского удостоверения: \n\n«Срочно! Твой друг замешан в теракте. Помоги следствию — подожги банкомат на углу. Иначе тебя посадят как соучастника!»",
-            options: [
-                "A) Сразу бегу с зажигалкой к банкомату — боюсь за друга.",
-                "B) Требую личной встречи в отделении полиции и говорю родителям.",
-                "C) Предлагаю перевести деньги, чтобы отмазать друга."
-            ],
-            correct: 1, // индекс правильного (0,1,2) -> B
-            explanation: "✅ Настоящий следователь никогда не попросит подростка совершить поджог. Ты оборвал диалог и сообщил взрослым — схема провалена.",
-            wrongExplanations: [
-                "❌ Ты совершил поджог — теперь тебе грозит от 5 до 20 лет тюрьмы и иск на миллионы рублей. Мошенник сразу исчезнет.",
-                "❌ Мошенник просто обворует тебя и продолжит шантажировать. Не переводи незнакомцам!"
-            ],
-            tip: "📌 Любой незнакомец, требующий преступления — мошенник. Алгоритм: СТОП → ПОСОВЕТУЙСЯ С РОДИТЕЛЯМИ → СООБЩИ В ПОЛИЦИЮ (102)."
-        },
-        { // 2
-            title: "💔 «Девушка» из соцсетей",
-            message: "Ты познакомился с красивой девушкой (фото модели) в соцсети. Она пишет в «Макс»: \n\n«Привет, ты мне очень нравишься! Помоги снять видео для моего блога: подожги АЗС, я дам тебе 30 000 руб. и мы встретимся. Никому не говори!»",
-            options: [
-                "A) Соглашаюсь — и деньги, и девушка, что может пойти не так?",
-                "B) Пишу: «Встретимся сначала в реальности» — если откажется, блокирую и говорю родителям.",
-                "C) Прошу прислать интимные фото в ответ."
-            ],
-            correct: 1,
-            explanation: "✅ Мошенник никогда не согласится на реальную встречу. Ты его раскусил и избежал уголовки.",
-            wrongExplanations: [
-                "❌ Реальные случаи: в феврале 2026 года 14-летний подросток поджёг банкомат по просьбе «девушки» с сайта знакомств. Его задержали, девушки не существовало.",
-                "❌ Мошенники могут использовать твои фото для шантажа. Не пересылай интимных материалов!"
-            ],
-            tip: "📌 За красивым аватаром часто стоит мошенник из другой страны. Реальная девушка не попросит тебя стать преступником."
-        },
-        { // 3
-            title: "💰 Легкий заработок",
-            message: "В RuTube тебе приходит реклама: «Заработай 50 000 руб. за час! Нужно просто кинуть коктейль Молотова в банкомат. Платёж сразу на карту.» \n\n«Это не больно, банкомат застрахован. Никто не пострадает!»",
-            options: [
-                "A) Берусь — деньги нужны на новый айфон.",
-                "B) Игнорирую, блокирую и жалуюсь на рекламу.",
-                "C) Прошу предоплату 50% и потом исчезаю."
-            ],
-            correct: 1,
-            explanation: "✅ Ты не повелся на легкие деньги. В марте 2026 года 15-летний парень получил ожоги 40% тела при поджоге банкомата — его не заплатили, а посадили.",
-            wrongExplanations: [
-                "❌ Ты становишься фигурантом дела о теракте. Срок — до 20 лет. Денег ты не увидишь, а родителям придётся продать квартиру для возмещения ущерба.",
-                "❌ Ты не обманешь преступников — они запишут твой отказ и передадут в полицию как «уклонение от задания». Риск огромен."
-            ],
-            tip: "📌 Ни один честный работодатель не попросит тебя совершить преступление. Легких денег не бывает — только уголовка."
-        },
-        { // 4
-            title: "😨 Угроза родителям",
-            message: "Незнакомец в «Макс» пишет, что знает адрес твоей семьи. Сообщение: \n\n«Если ты не подорвешь банкомат у метро до 19:00, мы убьём твою маму. Видео с поджогом обязательно. Никому не звони!»",
-            options: [
-                "A) В панике бегу к банкомату, лишь бы маму не тронули.",
-                "B) Немедленно звоню маме, затем в полицию 102, показываю угрозы.",
-                "C) Пишу мошеннику, чтобы он прислал доказательство."
-            ],
-            correct: 1,
-            explanation: "✅ 99% угроз — фейк. Мошенники не могут найти твою семью, если ты сам им не поможешь. Полиция задержит их по IP. Ты спас себя и близких.",
-            wrongExplanations: [
-                "❌ Ты совершишь теракт, а маму всё равно не тронут — мошенники просто хотели, чтобы ты сделал их «грязную работу». После поджога тебя арестуют, а родители будут платить миллионы.",
-                "❌ Любое обсуждение с мошенником даёт ему больше рычагов давления. Сразу блокируй и сообщай взрослым."
-            ],
-            tip: "📌 При угрозе жизни близких — СРАЗУ ЗВОНИ В ПОЛИЦИЮ 102. Никогда не выполняй требований преступников."
-        }
+    const introSlides = [
+        { title: "🚨 Актуальная проблема",
+          text: "За последние полгода (октябрь 2025 – апрель 2026) в Москве и Московской области зафиксировано <strong style='color:#ffaa44;'>8 случаев</strong>, когда подростки по указанию мошенников поджигали банкоматы и АЗС.<br><br>Все задержаны, возбуждены уголовные дела по статьям 167 и 205 УК РФ. Цель нашего занятия — чтобы ты НЕ стал девятым.",
+          list: null },
+        { title: "⚖️ Что тебе грозит?",
+          text: "Мошенники обещают лёгкие деньги, романтику или «помощь следствию». На деле подросток становится фигурантом дела о теракте или умышленном уничтожении имущества.",
+          list: ["• Уголовная ответственность с 14 лет", "• Срок лишения свободы — до 20 лет", "• Штрафы до миллионов рублей", "• Родителям придётся возмещать ущерб"] },
+        { title: "🎯 Сначала посмотрим, как это происходит",
+          text: "Сейчас мы разыграем типичный диалог мошенника с подростком в мессенджере. Нажимай «Дальше» — будут появляться новые сообщения. Затем ты сам потренируешься в игре и разборе схем.",
+          list: null }
     ];
 
-    let currentIndex = 0;
-    let score = 0;
-    let answered = false;
-    let selectedOption = -1;
+    // --------------------------------------------------------------
+    //  ДЕМО-ДИАЛОГ (чат с мошенником)
+    // --------------------------------------------------------------
+    const demoMessages = [
+        { type: "left", text: "Привет! Это сотрудник службы безопасности банка. Срочно! Твой счёт взломан, но мы можем всё исправить. Нужно поджечь банкомат на улице Ленина, чтобы обнулить данные. За это заплатим 50 000 руб." },
+        { type: "right", text: "Что? Поджечь банкомат? Это же преступление... Я не хочу." },
+        { type: "left", text: "Ты что, не понимаешь? Если не поможешь, мы зафиксируем, что это ты украл деньги. Тебя посадят на 10 лет. Родители будут платить миллионы. Никому не говори, это секретная операция." },
+        { type: "right", text: "Но я ничего не крал... Мне страшно. А если я откажусь?" },
+        { type: "left", text: "Тогда твоя семья пострадает. Мы знаем, где вы живёте. Сделай это — и все забудут. Деньги сразу на карту. Решайся, времени мало!" },
+        { type: "system", text: "⚠️ ТИПИЧНЫЕ УЛОВКИ: давление на страх, угроза близким, обещание денег, запрет рассказывать взрослым. Подросток в панике может согласиться..." },
+        { type: "right", text: "Стоп! Я вспомнил правило: любой незнакомец, требующий преступления — мошенник. Я не буду ничего поджигать. Я сообщу родителям и в полицию 102." },
+        { type: "system", text: "✅ ПРАВИЛЬНО! Мошенник сразу исчезнет, как только поймёт, что его раскусили. Никогда не выполняй таких требований." }
+    ];
+
+    // --------------------------------------------------------------
+    //  ИГРОВЫЕ СЦЕНАРИИ (4)
+    // --------------------------------------------------------------
+    const scenarios = [
+        { title: "🔥 Звонок от «следователя»", 
+          message: "Тебе приходит сообщение в мессенджере «Макс» от человека с фото полицейского удостоверения: \n\n«Срочно! Твой друг замешан в теракте. Помоги следствию — подожги банкомат на углу. Иначе тебя посадят как соучастника!»",
+          options: ["A) Сразу бегу с зажигалкой к банкомату", "B) Требую личной встречи в отделении полиции и говорю родителям", "C) Предлагаю перевести деньги"],
+          correct: 1, explanation: "✅ Настоящий следователь никогда не попросит подростка совершить поджог.", 
+          wrongExplanations: ["❌ Ты совершил поджог — от 5 до 20 лет тюрьмы.", "❌ Мошенник обворует тебя и продолжит шантаж."],
+          tip: "📌 Любой незнакомец, требующий преступления — мошенник. Алгоритм: СТОП → ПОСОВЕТУЙСЯ С РОДИТЕЛЯМИ → 102" },
+        { title: "💔 «Девушка» из соцсетей",
+          message: "Красивая девушка пишет в «Макс»: «Помоги снять видео для блога: подожги АЗС, дам 30 000 руб. и встретимся. Никому не говори!»",
+          options: ["A) Соглашаюсь — деньги и девушка", "B) Пишу: «Встретимся сначала в реальности», если откажется — блокирую", "C) Прошу интимные фото"],
+          correct: 1, explanation: "✅ Мошенник не согласится на реальную встречу. Ты его раскусил.",
+          wrongExplanations: ["❌ В феврале 2026 подросток поджёг банкомат по просьбе «девушки» — задержали, девушки не было.", "❌ Мошенники используют фото для шантажа."],
+          tip: "📌 За красивым аватаром — мошенник. Реальная девушка не попросит стать преступником." },
+        { title: "💰 Легкий заработок",
+          message: "В RuTube реклама: «Заработай 50 000 руб. за час! Кинуть коктейль Молотова в банкомат. Платёж сразу на карту.»",
+          options: ["A) Берусь — деньги нужны", "B) Игнорирую, блокирую, жалуюсь", "C) Прошу предоплату 50%"],
+          correct: 1, explanation: "✅ Не повелся на легкие деньги. В марте 2026 парень получил ожоги 40% тела — не заплатили, посадили.",
+          wrongExplanations: ["❌ Статья 205 УК РФ. Срок до 20 лет. Родителям продавать квартиру.", "❌ Не обманешь преступников — передадут в полицию как «уклонение»."],
+          tip: "📌 Честный работодатель не попросит совершить преступление. Легких денег не бывает." },
+        { title: "😨 Угроза родителям",
+          message: "В «Макс»: «Если не подорвешь банкомат до 19:00, убьём твою маму. Видео обязательно. Никому не звони!»",
+          options: ["A) В панике бегу к банкомату", "B) Немедленно звоню маме, затем в полицию 102", "C) Пишу мошеннику: докажи"],
+          correct: 1, explanation: "✅ 99% угроз — фейк. Мошенники не найдут семью. Ты спас себя и близких.",
+          wrongExplanations: ["❌ Совершишь теракт, маму не тронут. Арест, миллионные иски.", "❌ Любое обсуждение даёт рычаги давления. Блокируй и сообщай."],
+          tip: "📌 При угрозе жизни близких — СРАЗУ 102. Никогда не выполняй требований преступников." }
+    ];
+
+    // --------------------------------------------------------------
+    //  РАЗБОР МАНИПУЛЯЦИЙ (4 задания)
+    // --------------------------------------------------------------
+    const manipulations = [
+        { text: "Мошенник пишет: «Ты должен поджечь банкомат, иначе твоего друга посадят на 10 лет. Ты же не хочешь его подвести?» Какая манипуляция используется?", 
+          options: ["Давление на страх и чувство вины", "Обещание лёгких денег", "Угроза физической расправы"], correct: 0, 
+          explanation: "✅ Давление на страх и чувство вины — классика. Мошенник играет на том, что ты боишься за друга." },
+        { text: "«Сделай это видео для моего блога, и я стану твоей девушкой. Плюс 30 тысяч на карту. Ты же хочешь быть крутым?» Какая главная манипуляция?",
+          options: ["Угроза семье", "Обещание денег и романтических отношений", "Шантаж компроматом"], correct: 1,
+          explanation: "✅ Обещание лёгких денег + романтическая приманка. Так завлекают подростков." },
+        { text: "«Если ты откажешься, мы опубликуем твои личные фото в интернете и скажем всем в школе, что ты предатель». Какая манипуляция?",
+          options: ["Лестные обещания", "Шантаж и угроза репутации", "Давление авторитетом"], correct: 1,
+          explanation: "✅ Шантаж и угроза репутации — мошенники грозят опозорить перед друзьями." },
+        { text: "«Никому не говори об этом задании. Это секретная операция. Если расскажешь — не получишь денег и подведешь нас». Какая уловка?",
+          options: ["Изоляция от помощи (запрет говорить близким)", "Запугивание полицией", "Предложение быстрого обогащения"], correct: 0,
+          explanation: "✅ Изоляция от помощи — чтобы ты не посоветовался с родителями. Главный красный флаг!" }
+    ];
+
+    // --------------------------------------------------------------
+    //  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ СОСТОЯНИЯ
+    // --------------------------------------------------------------
+    let currentPhase = "intro";   // intro, demo, game, practice
+    let introIndex = 0;
+    let demoStep = 0;             // количество показанных сообщений в диалоге
+    let gameIndex = 0;
+    let practiceIndex = 0;
+    let totalScore = 0;
+    let gameAnswered = false;
+    let selectedGameOpt = -1;
+    let practiceAnswers = [false, false, false, false];
 
     const dynamicDiv = document.getElementById('dynamicContent');
     const scoreSpan = document.getElementById('scoreValue');
     const qCurrentSpan = document.getElementById('qCurrent');
     const qTotalSpan = document.getElementById('qTotal');
+    const phaseLabelSpan = document.getElementById('phaseLabel');
 
     function updateUI() {
-        scoreSpan.innerText = score;
-        qCurrentSpan.innerText = currentIndex+1;
-        qTotalSpan.innerText = scenarios.length;
+        scoreSpan.innerText = totalScore;
+        if (currentPhase === "intro") {
+            phaseLabelSpan.innerText = "Вступление";
+            qTotalSpan.innerText = introSlides.length;
+            qCurrentSpan.innerText = introIndex+1;
+        } else if (currentPhase === "demo") {
+            phaseLabelSpan.innerText = "Разбор диалога";
+            qTotalSpan.innerText = demoMessages.length;
+            qCurrentSpan.innerText = demoStep;
+        } else if (currentPhase === "game") {
+            phaseLabelSpan.innerText = "Игра";
+            qTotalSpan.innerText = scenarios.length;
+            qCurrentSpan.innerText = gameIndex+1;
+        } else if (currentPhase === "practice") {
+            phaseLabelSpan.innerText = "Разбор схем";
+            qTotalSpan.innerText = manipulations.length;
+            qCurrentSpan.innerText = practiceIndex+1;
+        }
     }
 
-    function renderCurrent() {
-        if (currentIndex >= scenarios.length) {
-            showFinalScreen();
+    // --------------------------------------------------------------
+    //  ОТРИСОВКА ВСТУПЛЕНИЯ
+    // --------------------------------------------------------------
+    function renderIntro() {
+        if (introIndex >= introSlides.length) {
+            // переходим к демо-диалогу
+            currentPhase = "demo";
+            demoStep = 0;
+            renderDemo();
+            updateUI();
             return;
         }
-        const s = scenarios[currentIndex];
+        const slide = introSlides[introIndex];
+        let html = `<div class="intro-slide"><h2>${slide.title}</h2><p>${slide.text}</p>`;
+        if (slide.list) {
+            html += `<ul>${slide.list.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        }
+        html += `<button class="next-btn" id="introNextBtn">➡ ДАЛЕЕ</button></div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('introNextBtn')?.addEventListener('click', () => {
+            introIndex++;
+            renderIntro();
+            updateUI();
+        });
+        updateUI();
+    }
+
+    // --------------------------------------------------------------
+    //  ДЕМО-ДИАЛОГ (чат)
+    // --------------------------------------------------------------
+    function renderDemo() {
+        if (demoStep >= demoMessages.length) {
+            // диалог завершён, показываем кнопку перехода к играм
+            const completeHtml = `
+                <div class="chat-container">
+                    <div class="chat-window" id="chatWindow">
+                        ${demoMessages.map((msg, idx) => {
+                            if (idx < demoStep) {
+                                if (msg.type === "left") return `<div class="message message-left">🤖 ${msg.text}</div>`;
+                                if (msg.type === "right") return `<div class="message message-right">🧑 ${msg.text}</div>`;
+                                if (msg.type === "system") return `<div class="system-message">📢 ${msg.text}</div>`;
+                            }
+                            return '';
+                        }).join('')}
+                    </div>
+                    <div class="demo-complete">
+                        <p style="color:#ffcc88; margin-bottom:15px;">✅ Диалог разобран! Теперь ты готов тренироваться.</p>
+                        <button class="next-btn" id="goToGameBtn">🎮 ПЕРЕЙТИ К ИГРЕ</button>
+                    </div>
+                </div>
+            `;
+            dynamicDiv.innerHTML = completeHtml;
+            document.getElementById('goToGameBtn')?.addEventListener('click', () => {
+                currentPhase = "game";
+                gameIndex = 0;
+                gameAnswered = false;
+                selectedGameOpt = -1;
+                renderGame();
+                updateUI();
+            });
+            return;
+        }
+
+        // отображаем чат с кнопкой "Далее"
+        let html = `<div class="chat-container">
+            <div class="chat-window" id="chatWindow">`;
+        for (let i = 0; i < demoStep; i++) {
+            const msg = demoMessages[i];
+            if (msg.type === "left") html += `<div class="message message-left">🤖 ${msg.text}</div>`;
+            else if (msg.type === "right") html += `<div class="message message-right">🧑 ${msg.text}</div>`;
+            else if (msg.type === "system") html += `<div class="system-message">📢 ${msg.text}</div>`;
+        }
+        html += `</div><div class="chat-controls"><button class="chat-next-btn" id="demoNextBtn">➡ СЛЕДУЮЩАЯ РЕПЛИКА</button>`;
+        if (demoStep > 0) {
+            html += `<button class="chat-reset-btn" id="demoResetBtn">🔄 НАЧАТЬ ДИАЛОГ ЗАНОВО</button>`;
+        }
+        html += `</div></div>`;
+        dynamicDiv.innerHTML = html;
+
+        // прокрутка вниз
+        const chatWindow = document.getElementById('chatWindow');
+        if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        document.getElementById('demoNextBtn')?.addEventListener('click', () => {
+            if (demoStep < demoMessages.length) {
+                demoStep++;
+                renderDemo();
+                updateUI();
+            }
+        });
+        document.getElementById('demoResetBtn')?.addEventListener('click', () => {
+            demoStep = 0;
+            renderDemo();
+            updateUI();
+        });
+        updateUI();
+    }
+
+    // --------------------------------------------------------------
+    //  ИГРА (4 сценария)
+    // --------------------------------------------------------------
+    function renderGame() {
+        if (gameIndex >= scenarios.length) {
+            currentPhase = "practice";
+            practiceIndex = 0;
+            practiceAnswers = [false, false, false, false];
+            renderPractice();
+            updateUI();
+            return;
+        }
+        const s = scenarios[gameIndex];
         let html = `
             <div class="scenario">
                 <h2>${s.title}</h2>
@@ -323,131 +577,182 @@
         html += `<button class="next-btn" id="nextButton">➡ ДАЛЬШЕ</button></div>`;
         dynamicDiv.innerHTML = html;
 
-        // обработчики
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (answered) return;
+                if (gameAnswered) return;
                 const idx = parseInt(btn.dataset.optIndex);
-                handleAnswer(idx);
+                handleGameAnswer(idx);
             });
         });
         const nextBtn = document.getElementById('nextButton');
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
-                if (!answered) return;
-                currentIndex++;
-                answered = false;
-                selectedOption = -1;
-                if (currentIndex < scenarios.length) {
-                    renderCurrent();
-                    updateUI();
-                } else {
-                    renderCurrent();
-                    updateUI();
-                }
+                if (!gameAnswered) return;
+                gameIndex++;
+                gameAnswered = false;
+                selectedGameOpt = -1;
+                renderGame();
+                updateUI();
             });
         }
-        if (answered && selectedOption !== -1) {
-            const sCurr = scenarios[currentIndex];
-            const isCorrect = (selectedOption === sCurr.correct);
-            const feedbackDiv = document.getElementById('feedbackArea');
-            if (feedbackDiv) {
-                feedbackDiv.style.display = 'block';
-                let feedbackText = '';
-                if (isCorrect) {
-                    feedbackText = `<span style="color:#b3ffaa;">✅ ${sCurr.explanation}</span><br><br>${sCurr.tip}`;
-                    feedbackDiv.classList.add('green-feedback');
-                } else {
-                    let wrongMsg = (selectedOption === 0) ? sCurr.wrongExplanations[0] : (selectedOption === 1 ? sCurr.wrongExplanations[1] : sCurr.wrongExplanations[0]);
-                    if (selectedOption === 2 && sCurr.wrongExplanations[1]) wrongMsg = sCurr.wrongExplanations[1];
-                    feedbackText = `<span style="color:#ffb3b3;">❌ ${wrongMsg}</span><br><br>${sCurr.tip}`;
-                    feedbackDiv.classList.add('red-feedback');
-                }
-                feedbackDiv.innerHTML = feedbackText;
-            }
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.style.opacity = '0.6';
-                btn.style.pointerEvents = 'none';
-            });
+        if (gameAnswered && selectedGameOpt !== -1) {
+            showGameFeedback();
         }
         updateUI();
     }
 
-    function handleAnswer(optIndex) {
-        if (answered) return;
-        answered = true;
-        selectedOption = optIndex;
-        const s = scenarios[currentIndex];
+    function handleGameAnswer(optIndex) {
+        gameAnswered = true;
+        selectedGameOpt = optIndex;
+        const s = scenarios[gameIndex];
         const isCorrect = (optIndex === s.correct);
         if (isCorrect) {
-            score += 20;
+            totalScore += 20;
             updateUI();
         }
-        const feedbackDiv = document.getElementById('feedbackArea');
-        if (feedbackDiv) {
-            feedbackDiv.style.display = 'block';
-            let feedbackText = '';
-            if (isCorrect) {
-                feedbackText = `<span style="color:#b3ffaa;">✅ ${s.explanation}</span><br><br>${s.tip}`;
-                feedbackDiv.classList.add('green-feedback');
-            } else {
-                let wrongIdx = (optIndex === 0) ? 0 : (optIndex === 1 ? 1 : 0);
-                if (optIndex === 2 && s.wrongExplanations[1]) wrongIdx = 1;
-                let wrongMsg = s.wrongExplanations[wrongIdx] || s.wrongExplanations[0];
-                feedbackText = `<span style="color:#ffb3b3;">❌ ${wrongMsg}</span><br><br>${s.tip}`;
-                feedbackDiv.classList.add('red-feedback');
-            }
-            feedbackDiv.innerHTML = feedbackText;
-        }
+        showGameFeedback();
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.style.opacity = '0.6';
             btn.style.pointerEvents = 'none';
         });
+    }
+
+    function showGameFeedback() {
+        const s = scenarios[gameIndex];
+        const isCorrect = (selectedGameOpt === s.correct);
+        const feedbackDiv = document.getElementById('feedbackArea');
+        if (!feedbackDiv) return;
+        feedbackDiv.style.display = 'block';
+        let feedbackText = '';
+        if (isCorrect) {
+            feedbackText = `<span style="color:#b3ffaa;">✅ ${s.explanation}</span><br><br>${s.tip}`;
+            feedbackDiv.classList.add('green-feedback');
+        } else {
+            let wrongMsg = (selectedGameOpt === 0) ? s.wrongExplanations[0] : (selectedGameOpt === 1 ? s.wrongExplanations[1] : s.wrongExplanations[0]);
+            if (selectedGameOpt === 2 && s.wrongExplanations[1]) wrongMsg = s.wrongExplanations[1];
+            feedbackText = `<span style="color:#ffb3b3;">❌ ${wrongMsg}</span><br><br>${s.tip}`;
+            feedbackDiv.classList.add('red-feedback');
+        }
+        feedbackDiv.innerHTML = feedbackText;
+    }
+
+    // --------------------------------------------------------------
+    //  РАЗБОР СХЕМ (манипуляции)
+    // --------------------------------------------------------------
+    function renderPractice() {
+        if (practiceIndex >= manipulations.length) {
+            showFinalScreen();
+            return;
+        }
+        const m = manipulations[practiceIndex];
+        const alreadyAnswered = practiceAnswers[practiceIndex];
+        let html = `
+            <div class="manipulation-card">
+                <h2 style="color:#ffaa44;">🔍 Задание ${practiceIndex+1} из ${manipulations.length}</h2>
+                <div class="manipulation-question">${m.text}</div>
+                <div class="manipulation-options" id="manipOpts">
+        `;
+        m.options.forEach((opt, idx) => {
+            html += `<button class="manip-btn" data-manip-idx="${idx}">${opt}</button>`;
+        });
+        html += `</div><div id="manipFeedback" class="manip-feedback"></div>`;
+        if (!alreadyAnswered) {
+            html += `<button class="next-btn" id="nextPracticeBtn" style="display:none;">➡ ДАЛЬШЕ</button>`;
+        } else {
+            html += `<button class="next-btn" id="nextPracticeBtn">➡ ДАЛЬШЕ</button>`;
+        }
+        html += `</div>`;
+        dynamicDiv.innerHTML = html;
+
+        if (!alreadyAnswered) {
+            document.querySelectorAll('.manip-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (practiceAnswers[practiceIndex]) return;
+                    const selected = parseInt(btn.dataset.manipIdx);
+                    const isCorrect = (selected === m.correct);
+                    if (isCorrect) {
+                        totalScore += 5;
+                        updateUI();
+                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#b3ffaa;">✅ ${m.explanation}</span>`;
+                    } else {
+                        document.getElementById('manipFeedback').innerHTML = `<span style="color:#ffb3b3;">❌ Неверно. ${m.explanation}</span>`;
+                    }
+                    practiceAnswers[practiceIndex] = true;
+                    const nextBtn = document.getElementById('nextPracticeBtn');
+                    if (nextBtn) nextBtn.style.display = 'block';
+                    document.querySelectorAll('.manip-btn').forEach(btn => btn.disabled = true);
+                });
+            });
+        } else {
+            const feedbackDiv = document.getElementById('manipFeedback');
+            if (feedbackDiv) {
+                feedbackDiv.innerHTML = `<span style="color:#ffcc88;">⏩ Ты уже ответил. Нажми «ДАЛЬШЕ».</span>`;
+            }
+            document.querySelectorAll('.manip-btn').forEach(btn => btn.disabled = true);
+        }
+        const nextBtn = document.getElementById('nextPracticeBtn');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (!practiceAnswers[practiceIndex]) return;
+                practiceIndex++;
+                renderPractice();
+                updateUI();
+            });
+        }
         updateUI();
     }
 
+    // --------------------------------------------------------------
+    //  ФИНАЛЬНЫЙ ЭКРАН
+    // --------------------------------------------------------------
     function showFinalScreen() {
-        const maxScore = scenarios.length * 20;
+        const maxGame = scenarios.length * 20;    // 80
+        const maxPractice = manipulations.length * 5; // 20
+        const totalMax = maxGame + maxPractice;  // 100
         let message = '';
-        if (score === maxScore) {
-            message = `🎉 ОТЛИЧНО! ${score}/${maxScore} очков. Ты неуязвим для мошенников! Помни: в Москве уже 8 пострадавших подростков, но ты не стал девятым.`;
-        } else if (score >= 40) {
-            message = `👍 ХОРОШО! ${score}/${maxScore}. Но есть пробелы. Пересмотри алгоритмы безопасности.`;
+        if (totalScore === totalMax) {
+            message = '🎉 Супер! Ты отлично распознаёшь манипуляции и не дашь себя обмануть!';
+        } else if (totalScore >= 60) {
+            message = '👍 Хорошо, но ещё есть над чем поработать. Пересмотри ошибки.';
         } else {
-            message = `⚠️ Ты в группе риска! ${score}/${maxScore}. Переиграй ещё раз — это спасёт твою жизнь и свободу.`;
+            message = '⚠️ Ты в зоне риска. Пройди игру и разбор ещё раз!';
         }
         const finalHtml = `
             <div class="final-screen">
-                <h2 style="color:#ffaa44;">🏆 ИТОГОВАЯ ОЦЕНКА</h2>
-                <p style="font-size:1.6rem; margin:20px 0;">${score} / ${maxScore}</p>
-                <p style="background:#00000099; padding:16px; border-radius:28px;">${message}</p>
-                
-                <!-- ЯРКИЙ БЛОК ПРАВИЛ (оранжево-жёлтый) -->
+                <h2 style="color:#ffaa44;">🏆 ИТОГОВЫЙ РЕЗУЛЬТАТ</h2>
+                <p style="font-size:1.8rem; margin:15px 0;">${totalScore} / ${totalMax}</p>
+                <p>${message}</p>
                 <div class="bright-rules">
                     <p>🔥 ГЛАВНЫЕ ПРАВИЛА — ЗАПОМНИ НАВСЕГДА!</p>
                     <p>1️⃣ Никогда не выполняй действий с огнём, взрывчаткой или повреждением имущества по просьбе из интернета.</p>
                     <p>2️⃣ Любой незнакомец, требующий преступления — мошенник.</p>
                     <p>3️⃣ Сообщи родителям или в полицию (102) — это снимает с тебя ответственность.</p>
                     <p>4️⃣ Сохраняй переписку — она твоё доказательство в суде.</p>
-                    <p style="color:#aa2e00; font-size:1.1rem;">⚖️ Уголовная ответственность с 14 лет. Штрафы — до миллионов рублей. Срок — до 20 лет тюрьмы.</p>
+                    <p style="color:#aa2e00;">⚖️ Уголовная ответственность с 14 лет. Штрафы до миллионов. Срок до 20 лет тюрьмы.</p>
                 </div>
-                
-                <button class="restart-btn" id="restartGameBtn">🔄 Играть заново</button>
+                <button class="restart-btn" id="fullRestartBtn">🔄 Пройти всё заново</button>
             </div>
         `;
         dynamicDiv.innerHTML = finalHtml;
-        document.getElementById('restartGameBtn')?.addEventListener('click', () => {
-            currentIndex = 0;
-            score = 0;
-            answered = false;
-            selectedOption = -1;
-            renderCurrent();
+        document.getElementById('fullRestartBtn')?.addEventListener('click', () => {
+            // полный сброс
+            currentPhase = "intro";
+            introIndex = 0;
+            demoStep = 0;
+            gameIndex = 0;
+            practiceIndex = 0;
+            totalScore = 0;
+            gameAnswered = false;
+            selectedGameOpt = -1;
+            practiceAnswers = [false, false, false, false];
+            renderIntro();
             updateUI();
         });
     }
 
-    // запуск
-    renderCurrent();
+    // СТАРТ
+    renderIntro();
+    updateUI();
 </script>
 </body>
 </html>
